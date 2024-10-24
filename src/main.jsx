@@ -1,31 +1,39 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
-import "./index.css";
-import { action as registerAction } from "./pages/Register/RegisterPage";
-import { action as loginAction } from "./pages/Login/LoginPage";
-import RootLayout from "./layout/RootLayout";
+import "./index.css"; // Make sure you have your styles
+
+import RootLayout from "./layout/RootLayout"; // Import your root layout
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from "react-router-dom";
 
-// Import LandingPage
-import { LoginPage, Question, RegisterPage, NotFound, SingleQuestion, RequireAuth, RequireLogout, Success, Landingpage } from "./pages";
+// Import your pages
+import {
+  LoginPage,
+  Question,
+  RegisterPage,
+  NotFound,
+  SingleQuestion,
+  RequireAuth,
+  RequireLogout,
+  Success,
+  Landingpage,  // Import your LandingPage component
+} from "./pages";  // Ensure that this path is correct
 
-// Define the router with LandingPage as the default route
+// Set up the router configuration
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />} errorElement={<NotFound />}>
-      {/* Set LandingPage as the default route */}
-      <Route index element={<Landingpage />} />
+      {/* Default route is the LandingPage */}
+      <Route index element={<Landingpage />} /> 
 
-      {/* User needs to logout to access these routes */}
+      {/* Non-authenticated routes */}
       <Route element={<RequireLogout />}>
-        <Route path="login" element={<LoginPage />} action={loginAction} />
-        <Route path="register" element={<RegisterPage />} action={registerAction} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
       </Route>
 
-      {/* User needs to login to access these routes */}
+      {/* Authenticated routes */}
       <Route element={<RequireAuth />}>
-        <Route path="quiz" element={<App />} /> {/* You can move App to another route like /quiz */}
+        <Route path="quiz" element={<App />} />  {/* Change App route to /quiz */}
         <Route path="question" element={<Question />} />
         <Route path="question/:id" element={<SingleQuestion />} />
         <Route path="finish" element={<Success />} />
@@ -34,7 +42,7 @@ const router = createBrowserRouter(
   )
 );
 
-// Render the app
+// Render the application
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RouterProvider router={router} />
